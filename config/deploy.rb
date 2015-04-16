@@ -1,5 +1,5 @@
-set :application, 'wally'
-set :repo_url, 'git@github.com:booncon/wally.git'
+set :application, 'wallly-demo'
+set :repo_url, 'git@github.com:booncon/wallly-demo.git'
 
 # Hardcodes branch to always be master
 # This could be overridden in a stage config file
