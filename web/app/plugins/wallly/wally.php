@@ -46,7 +46,12 @@ function wallly($search_criteria){
 
       $twitter_by_hash_tag = wal_loadTweetsByHashTag($twitter_settings, $search_criteria);
 
-      $response = $response + $twitter_by_user + $twitter_by_hash_tag;
+      if ($twitter_by_user != NULL) {
+        $response = $response + $twitter_by_user;
+      }
+      if ($twitter_by_hash_tag != NULL) {
+        $response = $response + $twitter_by_hash_tag;
+      }
     }
 
     $response = json_encode($response);
@@ -72,60 +77,66 @@ add_action( "wp_enqueue_scripts", "add_wallly_style" );
 
 
 function wal_loadTweetsByUserName($twitter_settings, $search_criteria){
-  $twitter_url = "https://api.twitter.com/1.1/statuses/home_timeline.json";
-  $twitter_options = "?screen_name=" . $search_criteria['twitter_user_name'] . "&count=" . $search_criteria['twitter_count'] . "&include_entities=true";
-  $twitter = new TwitterAPIExchange($twitter_settings);
-  $response = $twitter->setGetfield($twitter_options)
-  ->buildOauth($twitter_url, "GET")
-  ->performRequest(); 
+  if (isset($search_criteria['twitter_user_name'])) {
+    $twitter_url = "https://api.twitter.com/1.1/statuses/home_timeline.json";
+    $twitter_options = "?screen_name=" . $search_criteria['twitter_user_name'] . "&count=" . $search_criteria['twitter_count'] . "&include_entities=true";
+    $twitter = new TwitterAPIExchange($twitter_settings);
+    $response = $twitter->setGetfield($twitter_options)
+    ->buildOauth($twitter_url, "GET")
+    ->performRequest(); 
 
-  $response = json_decode($response);
+    $response = json_decode($response);
 
-  $formatted_response = array();
-  foreach($response as $tweet){
-    $formatted_response[$tweet->id] = array(
-      'created_at' => strtotime($tweet->created_at),
-      'id' => $tweet->id,
-      'username' => $tweet->user->name,
-      'handle' => $tweet->user->screen_name,
-      'content' => $tweet->text,
-      'source' => 'twitter'
-      );
+    $formatted_response = array();
+    foreach($response as $tweet){
+      $formatted_response[$tweet->id] = array(
+        'created_at' => strtotime($tweet->created_at),
+        'id' => $tweet->id,
+        'username' => $tweet->user->name,
+        'handle' => $tweet->user->screen_name,
+        'content' => $tweet->text,
+        'source' => 'twitter'
+        );
 
-    $formatted_response[$tweet->id]['media_url'] = isset($tweet->entities->media) ? $tweet->entities->media[0]->media_url : NULL;
-  }
+      $formatted_response[$tweet->id]['media_url'] = isset($tweet->entities->media) ? $tweet->entities->media[0]->media_url : NULL;
+    }
 
-  return $formatted_response;
+    return $formatted_response;
+  } else {
+    return NULL;
+  }  
 }
 
 function wal_loadTweetsByHashTag($twitter_settings, $search_criteria){
+  if (isset($search_criteria['hash_tag'])) {
+    $twitter_url = "https://api.twitter.com/1.1/search/tweets.json";
+    $twitter_options = "?q=#" . $search_criteria['hash_tag'] . "&count=" . $search_criteria['twitter_count'] . "&include_entities=true";
+    $twitter = new TwitterAPIExchange($twitter_settings);
+    $response = $twitter->setGetfield($twitter_options)
+    ->buildOauth($twitter_url, "GET")
+    ->performRequest(); 
 
-  $twitter_url = "https://api.twitter.com/1.1/search/tweets.json";
-  $twitter_options = "?q=#" . $search_criteria['hash_tag'] . "&count=" . $search_criteria['twitter_count'] . "&include_entities=true";
-  $twitter = new TwitterAPIExchange($twitter_settings);
-  $response = $twitter->setGetfield($twitter_options)
-  ->buildOauth($twitter_url, "GET")
-  ->performRequest(); 
+    $response = json_decode($response);
 
-  $response = json_decode($response);
+    $formatted_response = array();
+    foreach($response->statuses as $tweet){
+      $formatted_response[$tweet->id] = array(
+        'created_at' => strtotime($tweet->created_at),
+        'id' => $tweet->id,
+        'username' => $tweet->user->name,
+        'handle' => $tweet->user->screen_name,
+        'content' => $tweet->text,
+        'source' => 'twitter'
+        );
 
-  $formatted_response = array();
-  foreach($response->statuses as $tweet){
-    $formatted_response[$tweet->id] = array(
-      'created_at' => strtotime($tweet->created_at),
-      'id' => $tweet->id,
-      'username' => $tweet->user->name,
-      'handle' => $tweet->user->screen_name,
-      'content' => $tweet->text,
-      'source' => 'twitter'
-      );
+      $formatted_response[$tweet->id]['media_url'] = isset($tweet->entities->media) ? $tweet->entities->media[0]->media_url : NULL;
+      
+    }
 
-    $formatted_response[$tweet->id]['media_url'] = isset($tweet->entities->media) ? $tweet->entities->media[0]->media_url : NULL;
-    
+    return $formatted_response;
+  } else {
+    return NULL;
   }
-
-  return $formatted_response;
-
 }
 
 function wal_loadInstagram($instagram_settings, $search_criteria){
