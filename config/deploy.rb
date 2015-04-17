@@ -50,8 +50,10 @@ namespace :build_assets do
   task :push do
     run_locally do
       within "#{File.expand_path File.dirname(__FILE__)}/../web/app/themes/#{fetch(:application)}" do
-        puts "Attempting to create production assets with gulp"
+        puts "Creating the production assets with gulp"
         execute :gulp, "--production"
+        puts "Re-creating the local assets with gulp"
+        execute :gulp
       end
     end
     on roles(:web) do

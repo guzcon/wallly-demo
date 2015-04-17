@@ -29,7 +29,7 @@ function wallly($search_criteria){
 
   $cached_feeds = get_transient( 'cached_feeds' );
 
-  $cached_feeds = false;
+  // $cached_feeds = false;
 
   if ( false === ( $cached_feeds ) ) {
 
@@ -110,7 +110,7 @@ function wal_loadTweetsByUserName($twitter_settings, $search_criteria){
 function wal_loadTweetsByHashTag($twitter_settings, $search_criteria){
   if (isset($search_criteria['hash_tag'])) {
     $twitter_url = "https://api.twitter.com/1.1/search/tweets.json";
-    $twitter_options = "?q=#" . $search_criteria['hash_tag'] . "&count=" . $search_criteria['twitter_count'] . "&include_entities=true";
+    $twitter_options = "?q=#" . $search_criteria['hash_tag'] . "-filter:retweets&count=" . $search_criteria['twitter_count'] . "&include_entities=true";
     $twitter = new TwitterAPIExchange($twitter_settings);
     $response = $twitter->setGetfield($twitter_options)
     ->buildOauth($twitter_url, "GET")

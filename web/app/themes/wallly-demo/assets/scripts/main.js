@@ -23,6 +23,11 @@
     'common': {
       init: function() {
         // JavaScript to be fired on all pages
+        var msnry = new Masonry( $('.wallly_container'), {
+          // options...
+          itemSelector: '.wallly',
+          columnWidth: '20%'
+        });
       },
       finalize: function() {
         // JavaScript to be fired on all pages, after page specific JS is fired
