@@ -20,9 +20,12 @@
 (function ($) {
   // display new feed items
   var addNewFeedItems = function ($container, newElements) {
-    $container.prepend(newElements).imagesLoaded( function () {
-      $container.removeClass('hidden').masonry('prepended', newElements);
+    newElements.imagesLoaded(function () {
+      $container.removeClass('hidden').prepend(newElements).masonry('prepended', newElements);
     });
+    // $container.prepend(newElements).imagesLoaded( function () {
+    //   $container.removeClass('hidden').masonry('prepended', newElements);
+    // });
   }
   // fetch new feed items
   var loadNewFeedItems = function ($container, refresh) {
