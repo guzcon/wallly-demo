@@ -1,36 +1,21 @@
-<div class="wallly_container">
-<?php 
-  $search_criteria = array(
-   "hash_tag" => "ICTexpoHKI",
-   "twitter_count" => 6,
-   "instagram_count" => 6
-   );
- $results = wallly($search_criteria); ?>
-  <?php
-  $html = "";
-  foreach($results as $result ) {
-    $html .= "<div class='col-md-3'>";
-       $html .= "<div class='wallly-post'>";
-    if ( $result->media_url != NULL) {
-      $html .= "<div class='wallly-post-media'>";
-      $html .= '<img class="img-responsive" src="' . $result->media_url . '"/>';
-      $html .= "</div>";
-    }
-    $html .= "<div class='social_content_wrapper'>";
-    $html .= "<p class='social_content'>";
-    $html .= $result->content;
-    $html .= "</p>";
-    $html .= "<div class='social_info'>";
-    $html .= "<span class='social_user_handle'>@" . $result->handle . "</span>";
-    // $html .= "<span class='social_user_time'>" . $result->created_at . "</span>";
-    $html .= "<span class='pull-right'>" . $result->source . "</span>";
-    
-    $html .= "</div>";
-    $html .= "</div>";
-    $html .= "</div>";
-    $html .= "</div>";
-  }
-  echo $html;
-
-?>
-</div>
+<div class="wallly_container_wrap">
+  <div class="wally_container_header row">
+    <h1 class="col-xs-12"><img class="ict-logo" src="<?php echo get_template_directory_uri() . '/assets/images/ICT-logo-nettisivuille.png'; ?>">Social Media Wall: Use the hashtag #ICTexpoHKI</h1>
+  </div>
+  <div class="wallly_container hidden row"></div>
+  <div class="wally_container_footer">
+    <div class="row">
+      <div class="col-sm-4">
+        <img class="bottom-logo" src="<?php echo get_template_directory_uri() . '/assets/images/logo-ite.png'; ?>">
+        <h2>Digitalise your business</h2>
+      </div>
+      <div class="col-sm-4">
+        <img class="bottom-logo" src="<?php echo get_template_directory_uri() . '/assets/images/logo_bc-pixels.svg'; ?>">
+        <h2>Create a web product</h2>
+      </div>
+      <div class="col-sm-4">
+        <h1><a href="http://itewiki.fi/some">itewiki.fi/some</a></h1>
+      </div>
+    </div>  
+  </div>
+</div>  
