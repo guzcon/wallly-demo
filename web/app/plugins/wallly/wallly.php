@@ -292,9 +292,9 @@
           }
           $html .= '<div class="wallly-content-wrapper">';
             $html .= '<div class="wallly-timestamp">' . date_i18n( 'j. M, G.i', date( $result->created_at ) ) . ' on <span class="wallly-source-icon ' . $result->source . '"  title="' . $result->source . '"></span></div>';
-              $html .= '<p class="wallly-content">';
-              $html .= linkify_status_text($result->content);
-              $html .= '</p>';
+              $html .= '<div class="wallly-content"><div>';
+              $html .= '<p>' . linkify_status_text($result->content) . '</p>';
+              $html .= '</div></div>';
               $html .= '<div class="wallly-source-wrapper">';
                 $html .= '<div class="wallly-user-handle-wrap" title="' . $result->user->name . '"><img class="wallly-user-profile-pic" src="' . $result->user->image . '" alt="' . $result->user->handle . ' profile picture">@' . $result->user->handle . '</div>';          
               $html .= '</div>';

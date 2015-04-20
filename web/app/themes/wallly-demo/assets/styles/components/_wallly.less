@@ -2,6 +2,8 @@
 
 @wy-color-bg: #fff;
 @wy-line-height: 1.6em;
+@wy-content-max-height: 6 * @wy-line-height;
+@wy-ellipsis-width: 3em;
 
 .wallly-post {
   background-color: @wy-color-bg;
@@ -18,10 +20,25 @@
     padding: @grid-gutter-width / 2;
     word-break: break-word;
   }
+
     .wallly-content {
-      max-height: @wy-line-height * 6;
       overflow: hidden;
+      max-height: @wy-content-max-height;
+      line-height: @wy-line-height;
+      position: relative;
+      &:after {
+        content: "";
+        text-align: right;
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        width: 40%;
+        height: @wy-line-height * 1.4;
+        background: linear-gradient(to right, rgba(255, 255, 255, 0), white 100%);
+        pointer-events: none;
+      }
     }
+
       .wallly-timestamp {
         font-size: 0.6em;
         margin-bottom: 0.2em;
