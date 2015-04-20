@@ -233,6 +233,32 @@
     }
   }
 
+  function linkify_status_text($status_text)
+  {
+    // linkify URLs
+    $status_text = preg_replace(
+      '/(https?:\/\/\S+)/',
+      '<a href="\1" target="_blank">\1</a>',
+      $status_text
+    );
+
+    // linkify twitter users
+    $status_text = preg_replace(
+      '/(^|\s)@(\w+)/',
+      '\1@<a href="http://twitter.com/\2" target="_blank">\2</a>',
+      $status_text
+    );
+
+    // linkify tags
+    $status_text = preg_replace(
+      '/(^|\s)#(\w*[^\x00-\x7F]*\w*)/',
+      '\1#<a href="https://twitter.com/search?q=%23\2" target="_blank">\2</a>',
+      $status_text
+    );
+
+    return $status_text;
+  }
+
   function wally_output_activity_feed() {
     $results = wallly(array(), $_GET['refresh'] === 'true' ? true : false);
     $html = '';
@@ -247,11 +273,11 @@
         }
         $html .= "<div class='social_content_wrapper'>";
         $html .= "<p class='social_content'>";
-        $html .= $result->content;
+        $html .= linkify_status_text($result->content);
         $html .= "</p>";
         $html .= "<div class='social_info'>";
         $html .= "<span class='social_user_handle'>@" . $result->handle . "</span>";
-        $html .= "<span class='social_user_time'>" . date_i18n( 'M j, Y @ G:i:s', date( $result->created_at ) ) . "</span>";
+        // $html .= "<span class='social_user_time'>" . date_i18n( 'M j, Y @ G:i:s', date( $result->created_at ) ) . "</span>";
         $html .= "<span class='pull-right'>" . $result->source . "</span>";
         
         $html .= "</div>";
