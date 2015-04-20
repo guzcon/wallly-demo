@@ -8,16 +8,17 @@
       <div class="col-sm-6">
         <ul class="list-inline footer-credits">
           <li>
-            <img class="bottom-logo" src="<?php echo get_template_directory_uri() . '/assets/images/logo-ite.png'; ?>">
-            <h3>Digitalise your business</h3>
-          </li>          <li>
-            <img class="bottom-logo" src="<?php echo get_template_directory_uri() . '/assets/images/logo_bc-pixels.svg'; ?>">
-            <h3>Create a web product</h3>
+            <a href="http://itewiki.fi" target="_blank"><img class="bottom-logo" src="<?php echo get_template_directory_uri() . '/assets/images/logo-ite.png'; ?>"></a>
+            <h4 class="bottom-title">Digitalise your business</h4>
+          </li>
+          <li>
+            <a href="http://pixels.fi" target="_blank"><img class="bottom-logo" src="<?php echo get_template_directory_uri() . '/assets/images/logo_bc-pixels-v1.1-invert.svg'; ?>"></a>
+            <h4 class="bottom-title">Create a web product</h4>
           </li>
         </ul>
       </div>
       <div class="col-sm-6 text-right">
-        <h1><a href="http://itewiki.fi/some">itewiki.fi/some</a></h1>
+        <h1><a href="http://itewiki.fi/some" target="_blank" class="bottom-link color-inverted">itewiki.fi/some</a></h1>
       </div>
     </div>  
   </div>
