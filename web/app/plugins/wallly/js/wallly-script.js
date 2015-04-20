@@ -66,10 +66,18 @@
           var allElements = $container.find('.wallly-post-wrap');
           var removeOffset = max_results - newElements.length;
           var oldElements = allElements.slice(removeOffset < 0 ? 0 : removeOffset);
-          $container.masonry('remove', oldElements);
+          
+          newElements.each(function (key) {
+            window.setTimeout(function () {
+              if (oldElements[key] !== undefined) {
+                $container.masonry('remove', oldElements[key]);
+              }
+            }, 240 * key);
+          });
           window.setTimeout(function () {
+            $container.masonry('layout');
             addNewFeedItems($container, newElements);
-          }, 1400);
+          }, newElements.length * 240 + 500);
         } else {
           addNewFeedItems($container, newElements);
         }
@@ -84,10 +92,11 @@
   $(document).ready(function () {
     $('.wallly_container').each(function () {
       $(this).masonry({
-        itemSelector: '.wallly-post-wrap'
+        itemSelector: '.wallly-post-wrap',
+        transitionDuration: '0.6s'
       }).masonry( 'on', 'layoutComplete', function( laidOutItems ) {
         $('.wallly-content').ellipsis();
-      } );
+      });
       loadNewFeedItems($(this), false);
     });
   });

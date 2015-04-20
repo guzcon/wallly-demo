@@ -172,8 +172,9 @@
         ),
         'content' => $tweet->text,
         'media_url' => isset($tweet->entities->media) ? $tweet->entities->media[0]->media_url : NULL,
+        'link' => isset($tweet->entities->urls[0]->expanded_url) ? $tweet->entities->urls[0]->expanded_url : NULL,
         'source' => 'Twitter'
-      );    
+      ); 
     }
 
     if (count($formatted_response) > 0) {
@@ -280,7 +281,13 @@
           $html .= '<div class="wallly-post">';
           if ( $result->media_url != NULL) {
             $html .= '<div class="wallly-post-media">';
+              if ($result->link != NULL) {
+                $html .= '<a href="' . $result->link . '" target="_blank">';
+              }
               $html .= '<img class="img-responsive" src="' . $result->media_url . '"/>';
+              if ($result->link != NULL) {
+                $html .= '</a>';
+              }
             $html .= '</div>';
           }
           $html .= '<div class="wallly-content-wrapper">';
