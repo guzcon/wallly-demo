@@ -5,37 +5,84 @@
 
 .wallly-post {
   background-color: @wy-color-bg;
-  padding: 0.8em;
+  // padding: 0.8em;
   font-size: 1.4em;
   line-height: @wy-line-height;
   font-family: 'Open Sans', sans-serif;
   margin-bottom: @grid-gutter-width;
 }
   .wallly-post-media {
-    margin-bottom: 0.8em;
-  }
-  .social_content {
-    max-height: @wy-line-height * 5;
-    overflow: hidden;
-    // text-overflow: ellipsis;
   }
 
+  .wallly-content-wrapper {
+    padding: @grid-gutter-width / 2;
+    word-break: break-word;
+  }
+    .wallly-content {
+      max-height: @wy-line-height * 5;
+      overflow: hidden;
+    }
+      .wallly-timestamp {
+        font-size: 0.6em;
+        margin-bottom: 0.2em;
+        // color: lighten(@brand-primary, 10%);
+        opacity: 0.8;
+      }
+        .wallly-source-icon {
+          height: 1.4em;
+          margin: 0 0 -0.3em 0.3em;
+          width: 1.4em;
+          display: inline-block;
+          background-size: 1.4em;
+          background-repeat: no-repeat;
+          &.Twitter {
+            background-image: url(../images/icon-twitter.svg);
+          }
+          &.Instagram {
+            height: 1.2em;
+            margin: 0 0 -0.2em 0.3em;
+            background-size: 1.2em;
+            background-image: url(../images/icon-instagram.svg);
+          }
+        }
+
+  .wallly-user-handle-wrap {
+    font-size: 0.72em;
+  }
+    .wallly-user-profile-pic {
+      height: 1.4em;
+      border-radius: 50%;
+      margin: -0.22em 0.4em 0 0;
+    }
+
+
+.wally_container_header {  
+  h1 {
+    text-transform: uppercase;
+    font-weight: 400;
+    b {
+      text-transform: none;
+    }
+  }
+}
 
 .wallly_container_wrap {
-  height: 100vh;
-  overflow: hidden;
+  // height: 100vh;
+  // overflow: hidden;
   position: relative;
+  // padding: @grid-gutter-width / 2 0;
 }
   .wallly_container {
-    overflow: auto;
-    -webkit-overflow-scrolling: touch;
-    height: 100%;
+    // overflow: auto;
+    // -webkit-overflow-scrolling: touch;
+    // height: 100%;
   }
   .wally_container_footer {
-    position: absolute;
+    position: fixed;
     bottom: 0;
+    left: 0;
     width: 100%;
     background-color: #ccc;
-    padding-top: 0.4em;
-    padding-bottom: 0.4em;
+    padding: @grid-gutter-width / 2;
+    box-shadow: 0 -4px 4px rgba(0, 0, 0, 0.4);
   }

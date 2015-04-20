@@ -130,9 +130,12 @@
       $user_response = $twitter->setGetfield($twitter_options)
       ->buildOauth($twitter_url, "GET")
       ->performRequest();
-
-      update_option('wallly_twitter_offset_user', json_decode($user_response)->search_metadata->max_id);
-      $user_response = json_decode($user_response)->statuses;
+      if (isset(json_decode($user_response)->search_metadata->max_id)) {
+        update_option('wallly_twitter_offset_user', json_decode($user_response)->search_metadata->max_id);
+      }
+      if (isset(json_decode($user_response)->statuses)) {
+        $user_response = json_decode($user_response)->statuses;
+      }  
     }  
 
     if (isset($search_criteria['hashtags'])) {
@@ -148,23 +151,28 @@
       $tag_response = $twitter->setGetfield($twitter_options)
       ->buildOauth($twitter_url, "GET")
       ->performRequest();
-
-      update_option('wallly_twitter_offset_tag', json_decode($tag_response)->search_metadata->max_id);
-      $tag_response = json_decode($tag_response)->statuses;
+      if (isset(json_decode($tag_response)->search_metadata->max_id)) {
+        update_option('wallly_twitter_offset_tag', json_decode($tag_response)->search_metadata->max_id);
+      }
+      if (isset(json_decode($tag_response)->statuses)) {
+        $tag_response = json_decode($tag_response)->statuses;
+      }  
     }
 
     $response = array_merge($user_response, $tag_response);
 
     foreach ($response as $tweet) {
-      // dpm($tweet);
       $formatted_response['twitter_' . $tweet->id] = array(
         'created_at' => strtotime($tweet->created_at),
         'id' => $tweet->id,
-        'username' => $tweet->user->name,
-        'handle' => $tweet->user->screen_name,
+        'user' => array(
+          'name' => $tweet->user->name,
+          'handle' => $tweet->user->screen_name,
+          'image' => $tweet->user->profile_image_url_https
+        ),
         'content' => $tweet->text,
         'media_url' => isset($tweet->entities->media) ? $tweet->entities->media[0]->media_url : NULL,
-        'source' => 'twitter'
+        'source' => 'Twitter'
       );    
     }
 
@@ -217,12 +225,15 @@
         $formatted_response["instagram_" . $gram->caption->id] = array(
           'created_at' => $gram->created_time,
           'id' => $gram->id,
-          'username' => $gram->user->full_name,
-          'handle' => $gram->user->username,
+          'user' => array(
+            'name' => $gram->user->full_name,
+            'handle' => $gram->user->username,
+            'image' => $gram->user->profile_picture
+          ),
           'content' => $gram->caption->text,
           'media_url' => $gram->images->standard_resolution->url,
           'link' => $gram->link,
-          'source' => 'instagram'
+          'source' => 'Instagram'
         );
       }
     }
@@ -260,30 +271,29 @@
   }
 
   function wally_output_activity_feed() {
-    $results = wallly(array(), $_GET['refresh'] === 'true' ? true : false);
+    $search_criteria = array();
+    $results = wallly($search_criteria, $_GET['refresh'] === 'true' ? true : false);
     $html = '';
     if (isset($results)) {
       foreach($results as $result ) {
-        $html .= "<div class='col-xs-12 col-sm-6 col-md-4 col-lg-3 wallly-post-wrap'>";
-           $html .= "<div class='wallly-post'>";
-        if ( $result->media_url != NULL) {
-          $html .= "<div class='wallly-post-media'>";
-          $html .= '<img class="img-responsive" src="' . $result->media_url . '"/>';
-          $html .= "</div>";
-        }
-        $html .= "<div class='social_content_wrapper'>";
-        $html .= "<p class='social_content'>";
-        $html .= linkify_status_text($result->content);
-        $html .= "</p>";
-        $html .= "<div class='social_info'>";
-        $html .= "<span class='social_user_handle'>@" . $result->handle . "</span>";
-        // $html .= "<span class='social_user_time'>" . date_i18n( 'M j, Y @ G:i:s', date( $result->created_at ) ) . "</span>";
-        $html .= "<span class='pull-right'>" . $result->source . "</span>";
-        
-        $html .= "</div>";
-        $html .= "</div>";
-        $html .= "</div>";
-        $html .= "</div>";
+        $html .= '<div class="col-xs-12 col-sm-6 col-md-4 col-lg-2 wallly-post-wrap">';
+          $html .= '<div class="wallly-post">';
+          if ( $result->media_url != NULL) {
+            $html .= '<div class="wallly-post-media">';
+              $html .= '<img class="img-responsive" src="' . $result->media_url . '"/>';
+            $html .= '</div>';
+          }
+          $html .= '<div class="wallly-content-wrapper">';
+            $html .= '<div class="wallly-timestamp">' . date_i18n( 'j. M, G.i', date( $result->created_at ) ) . ' on <span class="wallly-source-icon ' . $result->source . '"  title="' . $result->source . '"></span></div>';
+              $html .= '<p class="wallly-content">';
+              $html .= linkify_status_text($result->content);
+              $html .= '</p>';
+              $html .= '<div class="wallly-source-wrapper">';
+                $html .= '<div class="wallly-user-handle-wrap" title="' . $result->user->name . '"><img class="wallly-user-profile-pic" src="' . $result->user->image . '" alt="' . $result->user->handle . ' profile picture">@' . $result->user->handle . '</div>';          
+              $html .= '</div>';
+            $html .= '</div>';
+          $html .= '</div>';
+        $html .= '</div>';
       }
       echo $html;
     }

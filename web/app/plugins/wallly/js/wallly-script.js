@@ -86,7 +86,7 @@
       $(this).masonry({
         itemSelector: '.wallly-post-wrap'
       }).masonry( 'on', 'layoutComplete', function( laidOutItems ) {
-        $('.social_content').ellipsis();
+        $('.wallly-content').ellipsis();
       } );
       loadNewFeedItems($(this), false);
     });
