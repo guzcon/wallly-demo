@@ -277,7 +277,7 @@
     $html = '';
     if (isset($results)) {
       foreach($results as $result ) {
-        $html .= '<div class="col-xs-12 col-sm-6 col-md-4 col-lg-2 wallly-post-wrap">';
+        $html .= '<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 wallly-post-wrap">';
           $html .= '<div class="wallly-post">';
           if ( $result->media_url != NULL) {
             $html .= '<div class="wallly-post-media">';
