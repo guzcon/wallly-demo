@@ -291,7 +291,7 @@
             $html .= '</div>';
           }
           $html .= '<div class="wallly-content-wrapper">';
-            $html .= '<div class="wallly-timestamp">' . date_i18n( 'j. M, G.i', date( $result->created_at ) ) . ' on <span class="wallly-source-icon ' . $result->source . '"  title="' . $result->source . '"></span></div>';
+            $html .= '<div class="wallly-timestamp"><span class="js-wallly-timestamp">' . $result->created_at . '</span> on <span class="wallly-source-icon ' . $result->source . '"  title="' . $result->source . '"></span></div>';
               $html .= '<div class="wallly-content"><div>';
               $html .= '<p>' . linkify_status_text($result->content) . '</p>';
               $html .= '</div></div>';
