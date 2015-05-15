@@ -140,10 +140,13 @@
 
     if (isset($search_criteria['hashtags'])) {
       $twitter_url = "https://api.twitter.com/1.1/search/tweets.json";    
+      $search_hashtags = str_replace(' ', '%20OR%20#', $search_criteria['hashtags']);
+
       if ($search_criteria['hide_retweets']) {
-        $search_criteria['hashtags'] .= '-filter:retweets';
+        $search_hashtags .= '-filter:retweets';
       }
-      $twitter_options = "?q=#" . $search_criteria['hashtags'] . "&count=" . $search_criteria['max_results'] . "&include_entities=true";
+
+      $twitter_options = "?q=#" . $search_hashtags . "&count=" . $search_criteria['max_results'] . "&include_entities=true";
       if ($refresh) {
         $twitter_options .= '&since_id=' . get_option('wallly_twitter_offset_tag');
       }
@@ -185,9 +188,8 @@
   }
 
   function wal_loadInstagram($instagram_settings, $search_criteria, $refresh) {
-    $user_response = $tag_response = $formatted_response = array();
+    $user_response = $tag_responses = $tag_response = $formatted_response = array();
     $user_id = isset($search_criteria['instagram_user_search']) ? $search_criteria['instagram_user_search'] : false;
-    $hash_tag = $search_criteria['hashtags'];
     $client_id = $instagram_settings['apiKey'];
     $count = $search_criteria['max_results'];
     $response = array();
@@ -206,21 +208,24 @@
       }  
     }
 
-    if ( $hash_tag ){
-      $url = 'https://api.instagram.com/v1/tags/' . $hash_tag . '/media/recent?client_id=' . $client_id . '&count=' . $count;
+    $search_hashtags = explode(' ', $search_criteria['hashtags']);
+
+    foreach ($search_hashtags as $hash_tag) {
+      $url = 'https://api.instagram.com/v1/tags/' . $hash_tag . '/media/recent?client_id=' . $client_id . '&count=' . ((int)($count / count($search_hashtags)));
       if ($refresh) {
-        $url .= '&min_tag_id=' . get_option('wallly_instagram_offset_tag');
+        $url .= '&min_tag_id=' . get_option('wallly_instagram_offset_tag_'.$hash_tag);
       }
       $tag_response = wp_remote_retrieve_body( wp_remote_get( $url ) );
       if (isset(json_decode($tag_response)->pagination->min_tag_id)) {
-        update_option('wallly_instagram_offset_tag', json_decode($tag_response)->pagination->min_tag_id , true);
+        update_option('wallly_instagram_offset_tag_'.$hash_tag, json_decode($tag_response)->pagination->min_tag_id , true);
       }
       if (isset(json_decode($tag_response)->data)) {
         $tag_response = json_decode($tag_response)->data;
+        $tag_responses = array_merge($tag_responses, $tag_response);
       }
     }
 
-    $response = array_merge($user_response, $tag_response);
+    $response = array_merge($user_response, $tag_responses);
     foreach ($response as $gram) {
       if (isset($gram->caption)) {
         $formatted_response["instagram_" . $gram->caption->id] = array(
