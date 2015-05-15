@@ -3,7 +3,7 @@
     Plugin Name: Wall.ly Social Media Plugin
     Plugin URI: http://pixels.fi
     Description: The Friendly Social Media Wall
-    Version: 1.0
+    Version: 1.1
     Author: booncon PIXELS
   */
 
@@ -111,7 +111,7 @@
   add_action( 'wp_ajax_nopriv_wallly', 'wallly' );
 
   function add_wallly_style(){
-    wp_enqueue_style( "wallly", plugin_dir_url(__FILE__) . "stylesheet/wallly_style.css" );
+    wp_enqueue_style( "wallly", plugin_dir_url(__FILE__) . "stylesheet/style.css" );
   }
 
   add_action( "wp_enqueue_scripts", "add_wallly_style" );  
@@ -220,7 +220,24 @@
       }
     }
 
-    $response = array_merge($user_response, $tag_response);
+    $response = "";
+
+    if ( !empty($user_response) && !empty($tag_response) ){
+      $response = array_merge($user_response, $tag_response);
+    }
+    elseif ( !empty($user_response) && empty($tag_response) ) {
+      $response = $user_response;
+    }
+    elseif ( empty($user_response) && !empty($tag_response) ) {
+      $response = $tag_response;
+    }
+    else{
+      return;
+    }
+
+
+
+    
     foreach ($response as $gram) {
       if (isset($gram->caption)) {
         $formatted_response["instagram_" . $gram->caption->id] = array(
@@ -277,14 +294,14 @@
     $html = '';
     if (isset($results)) {
       foreach($results as $result ) {
-        $html .= '<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 wallly-post-wrap">';
+        $html .= '<div class="wallly-post-wrap">';
           $html .= '<div class="wallly-post">';
           if ( $result->media_url != NULL) {
             $html .= '<div class="wallly-post-media">';
               if ($result->link != NULL) {
                 $html .= '<a href="' . $result->link . '" target="_blank">';
               }
-              $html .= '<img class="img-responsive" src="' . $result->media_url . '"/>';
+              $html .= '<img class="wallly-post-image" src="' . $result->media_url . '"/>';
               if ($result->link != NULL) {
                 $html .= '</a>';
               }
@@ -296,7 +313,14 @@
               $html .= '<p>' . linkify_status_text($result->content) . '</p>';
               $html .= '</div></div>';
               $html .= '<div class="wallly-source-wrapper">';
-                $html .= '<div class="wallly-user-handle-wrap" title="' . $result->user->name . '"><img class="wallly-user-profile-pic" src="' . $result->user->image . '" alt="' . $result->user->handle . ' profile picture">@' . $result->user->handle . '</div>';          
+                $html .= '<div class="wallly-user-handle-wrap" title="' . $result->user->name . '">';
+                $source_image = $source_image = plugin_dir_url(__FILE__) . "lib/instagram.png";
+                if ($result->source == "Twitter"){
+                  $source_image = plugin_dir_url(__FILE__) . "lib/twitter.png";
+                }
+                $html .= '<img class="wallly-social-image" src="' . $source_image . '" alt="' . $result->source . ' icon">';
+                $html .= '<img class="wallly-user-profile-pic" src="' . $result->user->image . '" alt="' . $result->user->handle . ' profile picture">@' . $result->user->handle;
+                $html .= '</div>';          
               $html .= '</div>';
             $html .= '</div>';
           $html .= '</div>';
@@ -322,4 +346,13 @@
 
   add_action('wp_ajax_wallly-feed', 'wally_output_activity_feed');
   add_action('wp_ajax_nopriv_wallly-feed', 'wally_output_activity_feed');
+  
+  add_shortcode('wallly_container', 'wallly_output_container');
+
+  function wallly_output_container(){
+    ob_start();
+    include( plugin_dir_path( __FILE__ ) . "lib/content.php");
+    $content = ob_get_clean();
+    return $content;  
+  }
 ?>
