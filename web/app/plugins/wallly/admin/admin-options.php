@@ -48,6 +48,14 @@ function wallly_settings_init(  ) {
     array( 'label_for' => 'wallly_refresh_rate' )
   );
 
+  add_settings_field( 
+    'wallly_mixedcontent', 
+    __( 'Force mixed content', 'wallly' ), 
+    'wallly_mixedcontent_render', 
+    'walllySettingsPage', 
+    'wallly_general_section'
+  );
+
   add_settings_section(
     'wallly_search_criteria_section',
     __('Default Search Criteria', 'wallly'),
@@ -194,6 +202,18 @@ function wallly_refresh_rate_render(  ) {
   $options = get_option( 'wallly_settings' );
   ?>
   <input type='number' id="wallly_refresh_rate" name='wallly_settings[wallly_refresh_rate]' value='<?php echo isset($options['wallly_refresh_rate']) ? $options['wallly_refresh_rate'] : 120; ?>'>
+  <?php
+}
+
+function wallly_mixedcontent_render() {
+  $options = get_option( 'wallly_settings' );
+  if (!isset($options['wallly_mixedcontent'])) {
+    $check_option = false;
+  } else {
+    $check_option = $options['wallly_mixedcontent'];
+  }
+  ?>
+  <label><input type='checkbox' name='wallly_settings[wallly_mixedcontent]' value="1" <?php checked(1, $check_option); ?>> <?php _e('Include content from different sources even if older.', 'wallly'); ?></label>
   <?php
 }
 

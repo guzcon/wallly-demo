@@ -27,6 +27,7 @@
       'twitter_user_search' => $wallly_options['wallly_twitter_user'],
       'max_results' => $wallly_options['wallly_max_results'],
       'hide_retweets' => $wallly_options['wallly_twitter_hide_retweets'],
+      'mixedcontent' => isset($wallly_options['wallly_mixedcontent']) ? true : false,
       'instagram_user_search' => $wallly_options['wallly_instagram_user'],
       'refresh_rate' => $wallly_options['wallly_refresh_rate']
     );
@@ -73,7 +74,7 @@
       }      
 
       if (count($response) > 0) {
-        $splice_offset = ceil($search_criteria['max_results'] / count($response));
+        $splice_offset = $search_criteria['mixedcontent'] ? ceil($search_criteria['max_results'] / count($response)) : $search_criteria['max_results'];
         $merged_results = array();
 
         function cmp_timestamp($a, $b) {
@@ -86,8 +87,10 @@
           $merged_results = array_merge($merged_results, $social_splice);
         }      
 
+        usort($merged_results, "cmp_timestamp");
+
         $response = array_splice($merged_results, 0, $search_criteria['max_results']);
-        usort($response, "cmp_timestamp");
+        
 
         if (!$refresh) {
           set_transient('wallly_cached_feeds', json_encode( $response ), $search_criteria['refresh_rate'] - 1 );
