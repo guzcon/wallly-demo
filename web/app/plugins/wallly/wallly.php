@@ -363,8 +363,21 @@
                 if ($result->source == "Twitter"){
                   $source_image = plugin_dir_url(__FILE__) . "lib/twitter.png";
                 }
+                if ($result->link != NULL) {
+                  $html .= '<a href="' . $result->link . '" target="_blank">';
+                }
                 $html .= '<img class="wallly-social-image" src="' . $source_image . '" alt="' . $result->source . ' icon">';
-                $html .= '<img class="wallly-user-profile-pic" src="' . $result->user->image . '" alt="' . $result->user->handle . ' profile picture">@' . $result->user->handle;
+
+                if ($result->link != NULL) {
+                  $html .= '</a>';
+                }
+                if ($result->source == "Twitter"){
+                  $html .= '<a href="http://www.twitter.com/' . $result->user->handle . '" target="_blank">';
+                }
+                else{
+                  $html .= '<a href="http://www.instagram.com/' . $result->user->handle . '" target="_blank">';  
+                }                
+                $html .= '<img class="wallly-user-profile-pic" src="' . $result->user->image . '" alt="' . $result->user->handle . ' profile picture">@' . $result->user->handle . "</a>";
                 $html .= '</div>';          
               $html .= '</div>';
             $html .= '</div>';
