@@ -3,7 +3,7 @@
     Plugin Name: Wall.ly Social Media Plugin
     Plugin URI: http://pixels.fi
     Description: The Friendly Social Media Wall
-    Version: 1.1
+    Version: 1.2
     Author: booncon PIXELS
   */
 
