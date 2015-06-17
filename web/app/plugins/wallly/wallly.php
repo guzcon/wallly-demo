@@ -293,7 +293,7 @@
             'handle' => $gram->user->username,
             'image' => $gram->user->profile_picture
           ),
-          'content' => $gram->caption->text,
+          'content' => substr($gram->caption->text, 0, 200) . "...",
           'media_url' => $gram->images->standard_resolution->url,
           'link' => $gram->link,
           'source' => 'Instagram'

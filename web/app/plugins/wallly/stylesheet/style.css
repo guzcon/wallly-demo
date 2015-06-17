@@ -20,7 +20,7 @@
 }
 .wallly-content {
   overflow: hidden;
-  height: 9.6em;
+  /*height: 14.6em;*/
   line-height: 1.6em;
 }
 .wallly-content:before {
@@ -35,11 +35,11 @@
   margin-left: -5px;
 }
 .wallly-content:after {
-  content: "\02026";
+  /*content: "\02026";*/
   box-sizing: content-box;
   float: right;
   position: relative;
-  top: -1.6em;
+  top: 2.6em;
   left: 100%;
   width: 3em;
   margin-left: -3em;
