@@ -45,6 +45,17 @@ var t=e%10,a=e%100-t,n=e>=100?100:null;return e+(Xr[t]||Xr[a]||Xr[n])},week:{dow
     //   $container.removeClass('hidden').masonry('prepended', newElements);
     // });
   }
+
+  var spinner = '<div class="loading"><?xml-stylesheet type="text/css" href="animation.min.css" ?><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><g class="w-cube"><rect class ="sq1" x="17" y="17" fill="#F2F2F2" width="10" height="10"/><rect class ="sq3" x="17" y="27" fill="#B8DBE2" width="10" height="10"/><rect class ="sq4" x="17" y="37" fill="#F2F2F2" width="10" height="10"/><rect class ="sq2" x="27" y="17" fill="#B8DBE2" width="10" height="10"/><rect  x="27" y="27" fill="#F2F2F2" width="10" height="10"/><rect class ="sq5" x="27" y="37" fill="#C4E5D7" width="10" height="10"/><rect class ="sq6" x="37" y="27" fill="#C4E5D7" width="10" height="10"/><rect class ="sq7" x="37" y="37" fill="#B8DBE2" width="10" height="10"/><path fill="none" stroke="#F2F2F2" stroke-width="2" stroke-linejoin="round" stroke-miterlimit="10" d="M44.6,47.5H19.4 c-1.6,0-2.9-1.3-2.9-2.9V19.4c0-1.6,1.3-2.9,2.9-2.9h25.2c1.6,0,2.9,1.3,2.9,2.9v25.2C47.5,46.2,46.2,47.5,44.6,47.5z"/></g></svg></div>';
+
+  $(document).ajaxStop(function () {
+    $('.loading').hide();
+});
+
+  $(document).ajaxStart(function () {
+    $('body').append(spinner).show();
+});
+
   // fetch new feed items
   var loadNewFeedItems = function ($container, refresh) {
     var request = $.ajax({
