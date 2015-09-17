@@ -5,14 +5,21 @@
   <div class="wallly_container hidden row"></div>
   <div class="wally_container_footer <?php echo isset($_GET['wallly_hide_footer']) ? 'hidden' : ''; ?>">
     <div class="row">
-      <div class="col-sm-6">
+      <div class="col-sm-4">
         <ul class="list-inline footer-credits">
           <li>
             <a href="http://itewiki.fi" target="_blank"><img src="http://www.ndbsevents.com/wp-content/uploads/2015/06/NDBS-2015-logo-transparent-very-small.png" class="bottom-logo"></a>
           </li>
         </ul>
       </div>
-      <div class="col-sm-6 text-right">
+      <div class="col-sm-4 text-center">
+        <ul class="list-inline footer-credits">
+          <li>
+            #NDBS2015
+          </li>
+        </ul>
+      </div>
+      <div class="col-sm-4 text-right">
         <ul class="list-inline footer-credits">
           <li>
             Powered By
