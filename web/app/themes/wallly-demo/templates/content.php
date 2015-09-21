@@ -8,7 +8,7 @@
       <div class="col-sm-4">
         <ul class="list-inline footer-credits">
           <li>
-            <a href="http://itewiki.fi" target="_blank"><img src="http://www.ndbsevents.com/wp-content/uploads/2015/06/NDBS-2015-logo-transparent-very-small.png" class="bottom-logo"></a>
+            <a href="http://www.ndbsevents.com" target="_blank"><img src="<?php echo get_template_directory_uri() . '/assets/images/ndbs2015_logo.png'; ?>" class="bottom-logo"></a>
           </li>
         </ul>
       </div>
