@@ -59,11 +59,11 @@
     if ( $cached_feeds === false ) {
       $response = array();
 
-      if ( isset($instagram_settings['apiKey']) && isset($instagram_settings['apiSecret']) ){      
+      if ( isset($instagram_settings['apiKey']) && isset($instagram_settings['apiSecret']) ){
         $instagram_results = wal_loadInstagram($instagram_settings, $search_criteria, $refresh);
         if ($instagram_results != NULL) {
           array_push($response, $instagram_results);
-        }  
+        }
       }
 
       if( isset($twitter_settings['oauth_access_token']) && isset($twitter_settings['oauth_access_token_secret']) && isset($twitter_settings['consumer_key']) ) {
@@ -71,7 +71,7 @@
         if ($twitter_results != NULL) {
           array_push($response, $twitter_results);
         }
-      }      
+      }
 
       if (count($response) > 0) {
         $splice_offset = $search_criteria['mixedcontent'] ? ceil($search_criteria['max_results'] / count($response)) : $search_criteria['max_results'];
@@ -85,12 +85,12 @@
           usort($social_source, "cmp_timestamp");
           $social_splice = array_splice($social_source, 0, $splice_offset);
           $merged_results = array_merge($merged_results, $social_splice);
-        }      
+        }
 
         usort($merged_results, "cmp_timestamp");
 
         $response = array_splice($merged_results, 0, $search_criteria['max_results']);
-        
+
 
         if (!$refresh) {
           set_transient('wallly_cached_feeds', json_encode( $response ), $search_criteria['refresh_rate'] - 1 );
@@ -104,7 +104,7 @@
       $cached_feeds = get_transient('wallly_cached_feeds');
     } else {
       $cached_feeds = get_transient('wallly_cached_refresh_feeds');
-    }    
+    }
 
     return json_decode($cached_feeds);
 
@@ -117,15 +117,15 @@
     wp_enqueue_style( "wallly", plugin_dir_url(__FILE__) . "stylesheet/style.css" );
   }
 
-  add_action( "wp_enqueue_scripts", "add_wallly_style" );  
+  add_action( "wp_enqueue_scripts", "add_wallly_style" );
 
   function wal_loadTweets($twitter_settings, $search_criteria, $refresh) {
     $user_response = $tag_response = $formatted_response = $response = array();
     if (!empty($search_criteria['twitter_user_search'])) {
       $twitter_url = "https://api.twitter.com/1.1/statuses/user_timeline.json";
       $twitter_options = "?screen_name=" . $search_criteria['twitter_user_search'] . "&count=" . $search_criteria['max_results'] . "&include_entities=true";
-      
-      if ($refresh) {
+      $offset_user = get_option('wallly_twitter_offset_user');
+      if ($refresh && $offset_user) {
         $twitter_options .= '&since_id=' . get_option('wallly_twitter_offset_user');
       }
 
@@ -137,10 +137,10 @@
         update_option('wallly_twitter_offset_user', json_decode($user_response)->search_metadata->max_id);
       }
       $user_response = json_decode($user_response);
-    }  
+    }
 
     if (!empty($search_criteria['hashtags'])) {
-      $twitter_url = "https://api.twitter.com/1.1/search/tweets.json";    
+      $twitter_url = "https://api.twitter.com/1.1/search/tweets.json";
       $search_hashtags = str_replace(' ', '%20OR%20#', $search_criteria['hashtags']);
 
       if ($search_criteria['hide_retweets']) {
@@ -189,9 +189,8 @@
         'media_url' => isset($tweet->entities->media) ? $tweet->entities->media[0]->media_url : NULL,
         'link' => isset($tweet->entities->urls[0]->expanded_url) ? $tweet->entities->urls[0]->expanded_url : NULL,
         'source' => 'Twitter'
-      ); 
+      );
     }
-
     if (count($formatted_response) > 0) {
       return $formatted_response;
     } else {
@@ -209,7 +208,7 @@
 
   function wal_get_instagram_user_id_from_username($instagram_settings, $user) {
     $client_id = $instagram_settings['apiKey'];
-   
+
     if($client_id) {
       $url = 'https://api.instagram.com/v1/users/search?q=' . $user . '&count=1&client_id=' . $client_id;
       $response = wp_remote_retrieve_body( wp_remote_get( $url ) );
@@ -375,10 +374,10 @@
                   $html .= '<a href="http://www.twitter.com/' . $result->user->handle . '" target="_blank">';
                 }
                 else{
-                  $html .= '<a href="http://www.instagram.com/' . $result->user->handle . '" target="_blank">';  
-                }                
+                  $html .= '<a href="http://www.instagram.com/' . $result->user->handle . '" target="_blank">';
+                }
                 $html .= '<img class="wallly-user-profile-pic" src="' . $result->user->image . '" alt="' . $result->user->handle . ' profile picture">@' . $result->user->handle . "</a>";
-                $html .= '</div>';          
+                $html .= '</div>';
               $html .= '</div>';
             $html .= '</div>';
           $html .= '</div>';
@@ -404,13 +403,13 @@
 
   add_action('wp_ajax_wallly-feed', 'wally_output_activity_feed');
   add_action('wp_ajax_nopriv_wallly-feed', 'wally_output_activity_feed');
-  
+
   add_shortcode('wallly_container', 'wallly_output_container');
 
   function wallly_output_container(){
     ob_start();
     include( plugin_dir_path( __FILE__ ) . "lib/content.php");
     $content = ob_get_clean();
-    return $content;  
+    return $content;
   }
 ?>
