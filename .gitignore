@@ -36,3 +36,4 @@ bin
 .vagrant
 
 .DS_Store
+debug.log
