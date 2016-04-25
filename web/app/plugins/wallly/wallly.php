@@ -340,8 +340,59 @@
       foreach($results as $result ) {
         $html .= '<div class="wallly-post-wrap">';
           $html .= '<div class="wallly-post">';
+          if ( $result->media_url == NULL ) {
+            $html .= '<div class="wallly-post-media-empty">';
+              $html .= '<div class="wallly-source-wrapper">';
+                $html .= '<div class="wallly-user-handle-wrap" title="' . $result->user->name . '">';
+                $source_image = $source_image = plugin_dir_url(__FILE__) . "lib/instagram-white.svg";
+                if ($result->source == "Twitter"){
+                  $source_image = plugin_dir_url(__FILE__) . "lib/twitter-white.svg";
+                }
+                if ($result->link != NULL) {
+                  $html .= '<a href="' . $result->link . '" target="_blank">';
+                }
+                $html .= '<img class="wallly-social-image" src="' . $source_image . '" alt="' . $result->source . ' icon">';
+
+                if ($result->link != NULL) {
+                  $html .= '</a>';
+                }
+                $html .= '<div class="wallly-author-image-container">';
+                  if ($result->source == "Twitter"){
+                    $html .= '<a href="http://www.twitter.com/' . $result->user->handle . '" target="_blank">';
+                  }
+                  else{
+                    $html .= '<a href="http://www.instagram.com/' . $result->user->handle . '" target="_blank">';
+                  }
+                  $html .= '<img class="wallly-user-profile-pic" src="' . $result->user->image . '" alt="' . $result->user->handle . ' profile picture"></a>';
+                $html .= '</div>';
+                $html .= '</div>';
+              $html .= '</div>';
+            $html .= '</div>';
+          }
           if ( $result->media_url != NULL) {
             $html .= '<div class="wallly-post-media">';
+            // Source image and auther image
+            $html .= '<div class="wallly-source-wrapper">';
+              $html .= '<div class="wallly-user-handle-wrap" title="' . $result->user->name . '">';
+              $source_image = $source_image = plugin_dir_url(__FILE__) . "lib/instagram-white.svg";
+              if ($result->source == "Twitter"){
+                $source_image = plugin_dir_url(__FILE__) . "lib/twitter-white.svg";
+              }
+              $html .= '<img class="wallly-social-image" src="' . $source_image . '" alt="' . $result->source . ' icon">';
+              if ($result->link != NULL) {
+                $html .= '</a>';
+              }
+              $html .= '<div class="wallly-author-image-container">';
+                if ($result->source == "Twitter"){
+                  $html .= '<a href="http://www.twitter.com/' . $result->user->handle . '" target="_blank">';
+                }
+                else{
+                  $html .= '<a href="http://www.instagram.com/' . $result->user->handle . '" target="_blank">';
+                }
+                $html .= '<img class="wallly-user-profile-pic" src="' . $result->user->image . '" alt="' . $result->user->handle . ' profile picture"></a>';
+              $html .= '</div>';
+              $html .= '</div>';
+            $html .= '</div>';
               if ($result->link != NULL) {
                 $html .= '<a href="' . $result->link . '" target="_blank">';
               }
@@ -356,29 +407,6 @@
               $html .= '<div class="wallly-content"><div>';
               $html .= '<p>' . linkify_status_text($result->content) . '</p>';
               $html .= '</div></div>';
-              $html .= '<div class="wallly-source-wrapper">';
-                $html .= '<div class="wallly-user-handle-wrap" title="' . $result->user->name . '">';
-                $source_image = $source_image = plugin_dir_url(__FILE__) . "lib/instagram.png";
-                if ($result->source == "Twitter"){
-                  $source_image = plugin_dir_url(__FILE__) . "lib/twitter.png";
-                }
-                if ($result->link != NULL) {
-                  $html .= '<a href="' . $result->link . '" target="_blank">';
-                }
-                $html .= '<img class="wallly-social-image" src="' . $source_image . '" alt="' . $result->source . ' icon">';
-
-                if ($result->link != NULL) {
-                  $html .= '</a>';
-                }
-                if ($result->source == "Twitter"){
-                  $html .= '<a href="http://www.twitter.com/' . $result->user->handle . '" target="_blank">';
-                }
-                else{
-                  $html .= '<a href="http://www.instagram.com/' . $result->user->handle . '" target="_blank">';
-                }
-                $html .= '<img class="wallly-user-profile-pic" src="' . $result->user->image . '" alt="' . $result->user->handle . ' profile picture">@' . $result->user->handle . "</a>";
-                $html .= '</div>';
-              $html .= '</div>';
             $html .= '</div>';
           $html .= '</div>';
         $html .= '</div>';

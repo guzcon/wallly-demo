@@ -5,9 +5,10 @@
   margin-right: -15px;
   overflow: auto;
 }
+
 .wallly-post {
-  border-top: thick solid #ED0B6E;
-  background-color: #ffffff;
+  background-color: #F4533B;
+  color: white;
   font-size: 1.4em;
   line-height: 1.6em;
   font-family: 'Open Sans', sans-serif;
@@ -15,26 +16,36 @@
   /*border-radius: 6px;*/
   /*box-shadow: 0px 2px 6px #aaa;*/
 }
+
 .wallly-content-wrapper {
   padding: 15px;
   word-break: break-word;
 }
+
 .wallly-content {
   overflow: hidden;
   /*height: 14.6em;*/
   line-height: 1.6em;
+  color: white;
 }
+
+.wallly-content a {
+  color: white;
+}
+
 .wallly-content:before {
   content: "";
   float: left;
   width: 5px;
   height: 9.6em;
 }
+
 .wallly-content > *:first-child {
   float: right;
   width: 100%;
   margin-left: -5px;
 }
+
 .wallly-content:after {
   /*content: "\02026";*/
   box-sizing: content-box;
@@ -46,12 +57,22 @@
   margin-left: -3em;
   padding-right: 5px;
   text-align: right;
-  background: linear-gradient(to right, rgba(255, 255, 255, 0), #ffffff 50%, #ffffff);
+  background: linear-gradient(to right, rgba(255, 255, 255, 0), #ffffff 50%, #ffffff);;
+}
+
+.wallly-post-media {
+  position: relative;
 }
 
 .wallly-post-media img {
 /*  border-top-left-radius: 6px;
   border-top-right-radius: 6px;*/
+}
+
+.wallly-post-media-empty {
+  height: 50px;
+  background-color: #FD945D;
+  position: relative;
 }
 
 .wallly-post-image {
@@ -64,6 +85,14 @@
   margin-bottom: 0.2em;
   opacity: 0.8;
 }
+
+.wallly-source-wrapper{
+  z-index: 3;
+  position: absolute;
+  bottom: 30px;
+  width: 100%;
+}
+
 .wallly-source-icon {
   height: 1.4em;
   margin: 0 0 -0.3em 0.3em;
@@ -72,40 +101,54 @@
   background-size: 1.4em;
   background-repeat: no-repeat;
 }
+
 .wallly-source-icon.Twitter {
   /*background-image: url(../images/icon-twitter.svg);*/
 }
+
 .wallly-source-icon.Instagram {
   height: 1.2em;
   margin: 0 0 -0.2em 0.3em;
   background-size: 1.2em;
   /*background-image: url(../images/icon-instagram.svg);*/
 }
+
 .wallly-user-handle-wrap {
   font-size: 0.72em;
+  width: 100%;
 }
+
+.wallly-author-image-container {
+  position: absolute;
+  right: 10px;
+}
+
 .wallly-user-profile-pic {
-  height: 1.4em;
+  height: 5em;
   border-radius: 50%;
-  margin: -0.22em 0.4em 0 0;
 }
 
 .wallly-social-image{
   height: 1.4em;
-  margin: -0.22em 0.4em 0 0; 
+  margin: -0.22em 0.4em 0 0;
+  left: 10px;
+  position: absolute;
 }
 
 .wally_container_header h1 {
   text-transform: uppercase;
   font-weight: 400;
 }
+
 .wally_container_header h1 b {
   text-transform: none;
 }
+
 .wallly_container_wrap {
   position: relative;
   padding-bottom: 60px;
 }
+
 .wally_container_footer {
   color: white;
   position: fixed;
@@ -115,9 +158,11 @@
   background-color: #ED0B6E;
   padding: 15px;
 }
+
 .wally_container_footer .color-inverted {
   color: #fff !important;
 }
+
 .wally_container_footer h1 {
   margin: 0;
 }
@@ -134,6 +179,22 @@ h4{
   width: 100%;
   padding-left: 15px;
   padding-right: 15px;
+}
+
+.wallly-img-header {
+  height: 160px;
+}
+
+.wallly-img-header.left {
+  background-color: #A7A7A7;
+}
+
+.wallly-img-header.mid {
+  background-color: #4D4D4D;
+}
+
+.wallly-img-header.right {
+  background-color: #E64670;
 }
 
 @media (min-width: 768px) {
