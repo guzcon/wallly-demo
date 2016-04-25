@@ -406,6 +406,7 @@
             $html .= '<div class="wallly-timestamp"><span class="js-wallly-timestamp">' . $result->created_at . '</span></div>';
               $html .= '<div class="wallly-content"><div>';
               $html .= '<p>' . linkify_status_text($result->content) . '</p>';
+              $html .= '<p>@' . $result->user->handle . '</p>';
               $html .= '</div></div>';
             $html .= '</div>';
           $html .= '</div>';
