@@ -344,9 +344,9 @@
             $html .= '<div class="wallly-post-media-empty">';
               $html .= '<div class="wallly-source-wrapper">';
                 $html .= '<div class="wallly-user-handle-wrap" title="' . $result->user->name . '">';
-                $source_image = $source_image = plugin_dir_url(__FILE__) . "lib/instagram-white.svg";
+                $source_image = $source_image = plugin_dir_url(__FILE__) . "lib/instagram-orange.svg";
                 if ($result->source == "Twitter"){
-                  $source_image = plugin_dir_url(__FILE__) . "lib/twitter-white.svg";
+                  $source_image = plugin_dir_url(__FILE__) . "lib/twitter-orange.svg";
                 }
                 if ($result->link != NULL) {
                   $html .= '<a href="' . $result->link . '" target="_blank">';
@@ -374,9 +374,9 @@
             // Source image and auther image
             $html .= '<div class="wallly-source-wrapper">';
               $html .= '<div class="wallly-user-handle-wrap" title="' . $result->user->name . '">';
-              $source_image = $source_image = plugin_dir_url(__FILE__) . "lib/instagram-white.svg";
+              $source_image = $source_image = plugin_dir_url(__FILE__) . "lib/instagram-orange.svg";
               if ($result->source == "Twitter"){
-                $source_image = plugin_dir_url(__FILE__) . "lib/twitter-white.svg";
+                $source_image = plugin_dir_url(__FILE__) . "lib/twitter-orange.svg";
               }
               $html .= '<img class="wallly-social-image" src="' . $source_image . '" alt="' . $result->source . ' icon">';
               if ($result->link != NULL) {

@@ -7,7 +7,6 @@
 }
 
 .wallly-post {
-  background-color: #F4533B;
   color: white;
   font-size: 1.4em;
   line-height: 1.6em;
@@ -20,6 +19,7 @@
 .wallly-content-wrapper {
   padding: 15px;
   word-break: break-word;
+  background-color: #F4533B;
 }
 
 .wallly-content {
@@ -71,14 +71,16 @@
 
 .wallly-post-media-empty {
   height: 50px;
-  background-color: #FD945D;
   position: relative;
+  background-color: #FD945D;
 }
 
 .wallly-post-image {
   display: block;
   max-width: 100%;
   height: auto;
+  margin-right: auto;
+  margin-left: auto;
 }
 .wallly-timestamp {
   font-size: 0.6em;
