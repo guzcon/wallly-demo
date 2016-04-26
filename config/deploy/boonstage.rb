@@ -1,6 +1,7 @@
 set :stage, :boonstage
 
 set :user, 'bc-grunt'
+set :branch, 'ite_wiki_2016_fixes'
 
 server 'stage.bcon.io', user: fetch(:user), roles: %w{web app db}
 
